@@ -1,0 +1,40 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+
+# Ignore compiled files
+*.pyc
+*.pyo
+
+# Ignore data files
+data/
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.tmp
+
+# Ignore any sensitive or secret files
+.env
+config.py
+
+# Ignore any generated files
+generated/
+
+# Ignore any specific file or directory
+# Example: ignore a file named "example.txt"
+# example.txt
+
+# Ignore any specific file or directory with a pattern
+# Example: ignore all files ending with ".bak"
+# *.bak
