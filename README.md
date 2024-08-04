@@ -1,6 +1,6 @@
 # ML Translator
 
-This repository contains a Flask application that uses the `MBartForConditionalGeneration` model from Hugging Face for language translation. The application exposes an API endpoint to translate text from English to various target languages.
+This repository contains a Flask application that uses the `MBartForConditionalGeneration` model from Hugging Face for language translation and the `T5ForConditionalGeneration` model for text summarization. The application exposes API endpoints to translate text and summarize text.
 
 ## Prerequisites
 
@@ -61,7 +61,7 @@ Before setting up the application, ensure you have the following installed:
 
    The application will be accessible at `http://localhost:3000`.
 
-## API Endpoint
+## API Endpoints
 
 ### `/translate`
 
@@ -105,7 +105,47 @@ curl -X POST http://localhost:3000/translate \
 }
 ```
 
-## Langauges Covered:
+### `/summarize`
+
+**Method:** `POST`
+
+**Description:** Summarizes the provided input text.
+
+**Request Body:**
+
+```json
+{
+  "input_text": "The text to be summarized"
+}
+```
+
+**Response:**
+
+```json
+{
+  "summarized_text": "Summary of the input text"
+}
+```
+
+**Example Request Using `curl`:**
+
+```bash
+curl -X POST http://localhost:3000/summarize \
+     -H "Content-Type: application/json" \
+     -d '{
+       "input_text": "The head of the United Nations says there is no military solution in Syria."
+     }'
+```
+
+**Example Response:**
+
+```json
+{
+  "summarized_text": "UN chief says no military solution in Syria."
+}
+```
+
+## Languages Covered for Translation:
 
 - Arabic (ar_AR)
 - Czech (cs_CZ)
@@ -159,3 +199,7 @@ curl -X POST http://localhost:3000/translate \
 - Xhosa (xh_ZA)
 - Galician (gl_ES)
 - Slovene (sl_SI)
+
+```
+
+```
