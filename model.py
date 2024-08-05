@@ -6,6 +6,8 @@ from transformers import (
 )
 import torch
 
+from helper import wrap_text
+
 # Load translation model and tokenizer
 translation_model_name = "SnypzZz/Llama2-13b-Language-translate"
 translation_model = MBartForConditionalGeneration.from_pretrained(
@@ -30,36 +32,63 @@ translation_model.to(device)
 summarization_model.to(device)
 
 
-def translate_text(input_text, target_language):
+def translate_text(input_text, target_language, max_length=120):
     """
     Translate input text to the specified target language using MBart model.
 
     Args:
     input_text (str): The text to translate.
     target_language (str): The target language code (e.g., 'hi_IN').
+    max_length (int): Maximum token length for each translation chunk.
 
     Returns:
     str: The translated text.
     """
     # Tokenize input text
-    model_inputs = translation_tokenizer(input_text, return_tensors="pt").to(device)
+    input_text = input_text.strip()
+    if not input_text:
+        raise ValueError("Input text is empty.")
 
-    # Get the BOS token ID for the target language
-    try:
-        bos_token_id = translation_tokenizer.lang_code_to_id[target_language]
-    except KeyError:
-        raise ValueError(f"Unsupported language code: {target_language}")
+    # Split text into chunks based on maximum token length
+    text_chunks = wrap_text(input_text, max_length)
 
-    # Generate translation using the model
-    generated_tokens = translation_model.generate(
-        **model_inputs, forced_bos_token_id=bos_token_id
-    )
+    # Initialize list to hold translated chunks
+    translated_chunks = []
 
-    # Decode the generated output
-    translation = translation_tokenizer.batch_decode(
-        generated_tokens, skip_special_tokens=True
-    )[0]
-    return translation
+    for chunk in text_chunks:
+        # Tokenize input text chunk
+        model_inputs = translation_tokenizer(
+            chunk, return_tensors="pt", truncation=True, max_length=max_length
+        ).to(device)
+
+        # Get the BOS token ID for the target language
+        try:
+            bos_token_id = translation_tokenizer.lang_code_to_id[target_language]
+        except KeyError:
+            raise ValueError(f"Unsupported language code: {target_language}")
+
+        # Generate translation using the model
+        generated_tokens = translation_model.generate(
+            **model_inputs,
+            forced_bos_token_id=bos_token_id,
+            max_length=max_length
+            + 50,  # Allow for expansion of text during translation
+            num_beams=4,  # Use beam search for better quality
+            early_stopping=True,  # Stop once the entire text is generated
+        )
+
+        # Decode the generated output
+        translation = translation_tokenizer.batch_decode(
+            generated_tokens, skip_special_tokens=True
+        )[0]
+
+        # Append translated chunk to list
+        translated_chunks.append(translation.strip())
+
+    # Join the translated chunks
+    full_translation = " ".join(translated_chunks)
+
+    return full_translation
 
 
 def summarize_text(input_text):
