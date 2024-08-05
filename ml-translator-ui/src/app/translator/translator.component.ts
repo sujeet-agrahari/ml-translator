@@ -65,6 +65,7 @@ export class TranslatorComponent {
     { name: 'Galician', code: 'gl_ES' },
     { name: 'Slovene', code: 'sl_SI' }
   ];
+  loading = false; // Loader state
   constructor(private http: HttpClient) { }
 
   onFileSelected(event: any): void {
@@ -74,6 +75,7 @@ export class TranslatorComponent {
   translate(): void {
 
     if (this.selectedFile && this.targetLanguage) {
+      this.loading = true; // Show loader
       this.downloadFilePath = 'downloads/translated_output.pdf';
       const payload = {
         'input_text': 'Hello. how are you?',
@@ -87,6 +89,7 @@ export class TranslatorComponent {
       this.http.post('http://localhost:3000/translate', payload,  { responseType: 'text' })
         .subscribe(
           response => {
+            this.loading = false; 
             console.log("response", response);
              // Generate PDF
              const doc = new jsPDF();
@@ -97,6 +100,7 @@ export class TranslatorComponent {
             
           },
           error => {
+            this.loading = false; 
             console.error('Translation error:', error);
           }
         );
