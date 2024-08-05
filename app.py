@@ -1,11 +1,15 @@
 # app.py
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS
 from model import translate_text, summarize_text
 import traceback  # Import the traceback module for detailed error logs
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Enable CORS for all origins
+CORS(app)  # Allow all origins
 
 
 # Define API endpoint for translation

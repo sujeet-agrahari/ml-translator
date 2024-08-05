@@ -1,0 +1,23 @@
+<div class="container">
+    <h1>PDF Content Translator</h1>
+    <div class="form-group">
+      <label for="pdfUpload">Upload PDF:</label>
+      <input type="file" id="pdfUpload" (change)="onFileSelected($event)">
+    </div>
+    <div class="form-group">
+      <label for="language">Select Language:</label>
+      <select id="language" [(ngModel)]="targetLanguage">
+        <option *ngFor="let language of languages" [value]="language.code">
+          {{ language.name }}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="downloadFilePath" style="font-size:13px;">
+        <p>Download file path: {{ downloadFilePath }}</p>
+      </div>
+    <div class="form-group">
+      <button (click)="translate()">Translate</button>
+    </div>
+ 
+  </div>
+  
