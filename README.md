@@ -105,6 +105,25 @@ curl -X POST http://localhost:3000/translate \
 }
 ```
 
+### `/translate-pdf`
+
+**Method:** `POST`
+
+**Description:** Translates the provided input text into the specified target language.
+
+**Request Body:**
+
+```json
+{
+  "pdf_file": "Upload your PDF file",
+  "target_language": "Language code (e.g., 'hi_IN' for Hindi, 'zh_CN' for Chinese)"
+}
+```
+
+**Response:**
+
+PDF file with translated content.
+
 ### `/summarize`
 
 **Method:** `POST`
