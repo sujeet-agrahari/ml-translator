@@ -77,30 +77,32 @@ export class TranslatorComponent {
     if (this.selectedFile && this.targetLanguage) {
       this.loading = true; // Show loader
       this.downloadFilePath = 'downloads/translated_output.pdf';
-      const payload = {
-        'input_text': 'Hello. how are you?',
-        'target_language': this.targetLanguage
-      }
-      // const formData = new FormData();
-      // formData.append('input_text', 'Hello. how are you?')
-      // // formData.append('file', this.selectedFile);
-      // formData.append('target_language', this.targetLanguage);
-
-      this.http.post('http://localhost:3000/translate', payload,  { responseType: 'text' })
+      // const payload = {
+      //   'input_text': 'Hello. how are you?',
+      //   'target_language': this.targetLanguage
+      // }
+     
+      const formData = new FormData();
+      // formData.append('input_text', 'Hello. how are you?');
+      formData.append('pdf_file', this.selectedFile);
+      formData.append('target_language', this.targetLanguage);
+  
+      this.http.post('http://localhost:3000/translate-pdf', formData, { responseType: 'blob' })
         .subscribe(
-          response => {
-            this.loading = false; 
-            console.log("response", response);
-             // Generate PDF
-             const doc = new jsPDF();
-             doc.text(response, 10, 10);
-             
-             // Save the PDF
-             doc.save('translated_output.pdf');
-            
+          (response: Blob) => {
+            this.loading = false;
+            const blob = new Blob([response], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'translated_output.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
           },
           error => {
-            this.loading = false; 
+            this.loading = false;
             console.error('Translation error:', error);
           }
         );
