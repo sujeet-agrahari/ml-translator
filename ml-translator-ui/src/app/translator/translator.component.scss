@@ -1,0 +1,133 @@
+
+// // Background image styling
+
+// Define color variables
+$primary-color: #1d2172;
+$primary-color-dark: #1d2172;
+$background-color: #f8f9fa;
+$border-color: #ced4da;
+$text-color: #212529;
+
+// Container styling
+.container {
+  max-width: 600px;
+  margin: 170px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); // Slight transparency for background image visibility
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); // Optional: adds a blur effect for better readability
+}
+
+// Heading styling
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: $primary-color;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+// Form group styling
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 10px;
+
+  // Label styling
+  label {
+    width: 150px;
+    font-weight: bold;
+    color: $text-color;
+  }
+
+  // File input styling
+  input[type="file"] {
+    flex: 1;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  // Select styling
+  select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+  }
+
+  // Button styling
+  button {
+    margin-left: auto;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color-dark;
+    }
+  }
+}
+
+// Add spacing between form groups
+.form-group:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+// Add responsive design for smaller screens
+@media (max-width: 768px) {
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+
+    label {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    input[type="file"],
+    select {
+      width: 100%;
+    }
+
+    button {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+}
+
+// Overlay and loader styles
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.svg-loader {
+  width: 100px;
+  height: 100px;
+}
+
+.svg-loader svg {
+  width: 100%;
+  height: 100%;
+}
